@@ -1,3 +1,11 @@
+/**----------------------------------------------
+ * ?                    ABOUT
+ * @author      : Daniel Caldera
+ * @email       : danxcaldera@gmail.com
+ * @createdOn   : 21/08/21
+ * @path        : components/Widgets/Iotindicator.vue
+ *---------------------------------------------**/
+
 <template>
   <card>
     <div slot="header">
@@ -16,42 +24,52 @@
 
 <script>
 export default {
-  props: ['config'],
+  props: ["config"],
   data() {
     return {
       value: false,
       topic: "",
-      props: ['config']      
+      props: ["config"],
     };
   },
-  watch:  {
-            config: {
-                immediate: true,
-                deep: true,
-                handler() {
-                    setTimeout(() => {
-                        this.value = false;
+  watch: {
+    config: {
+      immediate: true,
+      deep: true,
+      handler() {
+        setTimeout(() => {
+          this.value = false;
 
-                        this.$nuxt.$off(this.topic);
+          this.$nuxt.$off(this.topic);
 
-                        //userId/dId/uniquestr/sdata
-                        const topic = this.config.userId + "/" + this.config.selectedDevice.dId + "/" + this.config.variable + "/sdata";
-                        this.$nuxt.$on(topic, this.processReceivedData);
-
-                    }, 300);
-                }
-            }
-        },
-  mounted(){
-    const topic = this.config.userId + "/" + this.config.selectedDevice.dId + "/" + this.config.variable + "/sdata";
+          //userId/dId/uniquestr/sdata
+          const topic =
+            this.config.userId +
+            "/" +
+            this.config.selectedDevice.dId +
+            "/" +
+            this.config.variable +
+            "/sdata";
+          this.$nuxt.$on(topic, this.processReceivedData);
+        }, 300);
+      },
+    },
+  },
+  mounted() {
+    const topic =
+      this.config.userId +
+      "/" +
+      this.config.selectedDevice.dId +
+      "/" +
+      this.config.variable +
+      "/sdata";
     this.$nuxt.$on(topic, this.processReceivedData);
   },
-  beforeDestroy(){
+  beforeDestroy() {
     this.$nuxt.$off(this.topic);
   },
   methods: {
-
-    processReceivedData(data){
+    processReceivedData(data) {
       try {
         console.log("received");
         console.log(data);
@@ -60,7 +78,7 @@ export default {
         console.log(error);
       }
     },
-      
+
     getIconColorClass() {
       if (!this.value) {
         return "text-dark";
@@ -78,10 +96,7 @@ export default {
       if (this.config.class == "danger") {
         return "text-danger";
       }
-    }
-
-  }
+    },
+  },
 };
-
-
 </script>
