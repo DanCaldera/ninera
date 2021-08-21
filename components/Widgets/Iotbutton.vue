@@ -1,3 +1,11 @@
+/**----------------------------------------------
+ * ?                    ABOUT
+ * @author      : Daniel Caldera
+ * @email       : danxcaldera@gmail.com
+ * @createdOn   : 21/08/21
+ * @path        : components/Widgets/Iotbutton.vue
+ *---------------------------------------------**/
+
 <template>
   <card>
     <div slot="header">
@@ -12,7 +20,12 @@
       style="font-size: 30px"
     ></i>
 
-    <base-button  @click="sendValue()" :type="config.class" class="mb-3 pull-right" size="lg">{{config.text}}</base-button>
+    <base-button
+      @click="sendValue()"
+      :type="config.class"
+      class="mb-3 pull-right"
+      size="lg"
+    >{{config.text}}</base-button>
 
   </card>
 </template>
@@ -25,35 +38,33 @@ export default {
       sending: false,
     };
   },
-  mounted() {
- 
-  },
+  mounted() {},
   methods: {
-
     sendValue() {
+      this.sending = true;
 
-        this.sending = true;
+      setTimeout(() => {
+        this.sending = false;
+      }, 500);
 
-        setTimeout(() => {
-            this.sending = false;
-        }, 500);
+      const toSend = {
+        topic:
+          this.config.userId +
+          "/" +
+          this.config.selectedDevice.dId +
+          "/" +
+          this.config.variable +
+          "/actdata",
+        msg: {
+          value: this.config.message,
+        },
+      };
 
-        const toSend = {
-            topic: this.config.userId + "/" + this.config.selectedDevice.dId + "/" + this.config.variable + "/actdata",
-            msg: {
-                value: this.config.message
-            }
-        };
-
-        console.log(toSend);
-        this.$nuxt.$emit('mqtt-sender', toSend);
-
-
+      console.log(toSend);
+      this.$nuxt.$emit("mqtt-sender", toSend);
     },
-   
 
     getIconColorClass() {
-
       if (!this.sending) {
         return "text-dark";
       }
@@ -70,7 +81,7 @@ export default {
       if (this.config.class == "danger") {
         return "text-danger";
       }
-    }
-  }
+    },
+  },
 };
 </script>
