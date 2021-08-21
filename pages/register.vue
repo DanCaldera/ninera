@@ -1,10 +1,21 @@
+/**----------------------------------------------
+ * ?                    ABOUT
+ * @author      : Daniel Caldera
+ * @email       : danxcaldera@gmail.com
+ * @createdOn   : 21/08/21
+ * @path        : pages/register.vue
+ *---------------------------------------------**/
+
 <template>
   <div class="container login-page">
     <div class="col-lg-4 col-md-6 ml-auto mr-auto">
       <card class="card-login card-white">
         <template slot="header">
-          <img src="img//card-primary.png" alt="" />
-          <h1 class="card-title">IoT GL</h1>
+          <img
+            src="img//card-primary.png"
+            alt=""
+          />
+          <h1 class="card-title">Nanita IoT</h1>
         </template>
 
         <div>
@@ -48,14 +59,20 @@
 
           <div class="pull-left">
             <h6>
-              <nuxt-link class="link footer-link" to="/login">
+              <nuxt-link
+                class="link footer-link"
+                to="/login"
+              >
                 login
               </nuxt-link>
             </h6>
           </div>
 
           <div class="pull-right">
-            <h6><a href="#help!!!" class="link footer-link">Need Help?</a></h6>
+            <h6><a
+                href="#help!!!"
+                class="link footer-link"
+              >Need Help?</a></h6>
           </div>
         </div>
       </card>
@@ -64,29 +81,28 @@
 </template>
 <script>
 export default {
-  middleware: 'notAuthenticated',
+  middleware: "notAuthenticated",
   layout: "auth",
   data() {
     return {
       user: {
         name: "",
         email: "",
-        password: ""
-      }
+        password: "",
+      },
     };
   },
   methods: {
     register() {
-
       this.$axios
         .post("/register", this.user)
-        .then(res => {
+        .then((res) => {
           //success! - Usuario creado.
           if (res.data.status == "success") {
             this.$notify({
               type: "success",
               icon: "tim-icons icon-check-2",
-              message: "Success! Now you can login..."
+              message: "Success! Now you can login...",
             });
 
             this.user.name = "";
@@ -95,38 +111,30 @@ export default {
 
             return;
           }
-
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e.response.data);
 
           if (e.response.data.error.errors.email.kind == "unique") {
             this.$notify({
               type: "danger",
               icon: "tim-icons icon-alert-circle-exc",
-              message: "User already exists :("
+              message: "User already exists :(",
             });
 
             return;
-
           } else {
-
             this.$notify({
               type: "danger",
               icon: "tim-icons icon-alert-circle-exc",
-              message: "Error creating user..."
+              message: "Error creating user...",
             });
 
             return;
           }
-
-
-
         });
-
-
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

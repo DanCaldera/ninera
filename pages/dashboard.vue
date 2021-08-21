@@ -1,14 +1,20 @@
+/**----------------------------------------------
+ * ?                    ABOUT
+ * @author      : Daniel Caldera
+ * @email       : danxcaldera@gmail.com
+ * @createdOn   : 21/08/21
+ * @path        : pages/dashboard.vue
+ *---------------------------------------------**/
+
 <template>
-
-
-    
-  <div class="row" v-if="$store.state.devices.length > 0">
-
+  <div
+    class="row"
+    v-if="$store.state.devices.length > 0"
+  >
     <div
       v-for="(widget, index) in $store.state.selectedDevice.template.widgets"
       :key="index"
       :class="[widget.column]"
-      
     >
 
       <Rtnumberchart
@@ -39,38 +45,28 @@
 
 </template>
 <script>
-
 export default {
-  middleware: 'authenticated',
-  name: 'Dashboard',
+  middleware: "authenticated",
+  name: "Dashboard",
   data() {
-    return {
-
-
-    } 
+    return {};
   },
 
-  mounted() {
-  
-
-  },
+  mounted() {},
 
   methods: {
-
-    fixWidget(widget){
+    fixWidget(widget) {
       var widgetCopy = JSON.parse(JSON.stringify(widget));
       widgetCopy.selectedDevice.dId = this.$store.state.selectedDevice.dId;
       widgetCopy.selectedDevice.name = this.$store.state.selectedDevice.name;
       widgetCopy.userId = this.$store.state.selectedDevice.userId;
 
-      if (widget.widget =="numberchart"){
+      if (widget.widget == "numberchart") {
         widgetCopy.demo = false;
       }
-      
+
       return widgetCopy;
-    }
-
-  }
-
+    },
+  },
 };
 </script>
