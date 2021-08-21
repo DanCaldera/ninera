@@ -1,3 +1,11 @@
+/**----------------------------------------------
+ * ?                    ABOUT
+ * @author      : Daniel Caldera
+ * @email       : danxcaldera@gmail.com
+ * @createdOn   : 21/08/21
+ * @path        : componentes/Json.vue
+ *---------------------------------------------**/
+
 <template>
   <pre v-html="jsonColor(value)"></pre>
 </template>
@@ -36,27 +44,26 @@ export default {
   props: ["value"],
   data() {
     return {
-        vscodeTunedComments:{
-            "editor.tokenColorCustomizations": {
-
-"textMateRules": [
-    {
-        "scope": "comment.line",
-        "settings": {
-            "fontStyle": "bold italic",
-            "foreground":"#2bff63cd"
-        }
-    },
-    {
-        "scope": "comment.block",
-        "settings": {
-            "fontStyle": "bold",
-            "foreground":"#fe27f7cd" 
-        }
-    }
-]
-},
-        }
+      vscodeTunedComments: {
+        "editor.tokenColorCustomizations": {
+          textMateRules: [
+            {
+              scope: "comment.line",
+              settings: {
+                fontStyle: "bold italic",
+                foreground: "#2bff63cd",
+              },
+            },
+            {
+              scope: "comment.block",
+              settings: {
+                fontStyle: "bold",
+                foreground: "#fe27f7cd",
+              },
+            },
+          ],
+        },
+      },
     };
   },
   methods: {
@@ -70,7 +77,7 @@ export default {
         .replace(/>/g, "&gt;");
       return json.replace(
         /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-        function(match) {
+        function (match) {
           var cls = "number";
           if (/^"/.test(match)) {
             if (/:$/.test(match)) {
@@ -86,7 +93,7 @@ export default {
           return '<span class="' + cls + '">' + match + "</span>";
         }
       );
-    }
-  }
+    },
+  },
 };
 </script>
