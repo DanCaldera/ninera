@@ -1,3 +1,11 @@
+/**----------------------------------------------
+ * ?                    ABOUT
+ * @author      : Daniel Caldera
+ * @email       : danxcaldera@gmail.com
+ * @createdOn   : 21/08/21
+ * @path        : pages/devices.vue
+ *---------------------------------------------**/
+
 <template>
   <div>
     <!-- FORM ADD DEVICE -->
@@ -57,8 +65,7 @@
               type="primary"
               class="mb-3"
               size="lg"
-              >Add</base-button
-            >
+            >Add</base-button>
           </div>
         </div>
       </card>
@@ -72,17 +79,30 @@
         </div>
 
         <el-table :data="$store.state.devices">
-          <el-table-column label="#" min-width="50" align="center">
-            <div slot-scope="{ row, $index }">
+          <el-table-column
+            label="#"
+            min-width="50"
+            align="center"
+          >
+            <div slot-scope="{ $index }">
               {{ $index + 1 }}
             </div>
           </el-table-column>
 
-          <el-table-column prop="name" label="Name"></el-table-column>
+          <el-table-column
+            prop="name"
+            label="Name"
+          ></el-table-column>
 
-          <el-table-column prop="dId" label="Device Id"></el-table-column>
+          <el-table-column
+            prop="dId"
+            label="Device Id"
+          ></el-table-column>
 
-          <el-table-column prop="password" label="Password"></el-table-column>
+          <el-table-column
+            prop="password"
+            label="Password"
+          ></el-table-column>
 
           <el-table-column
             prop="templateName"
@@ -90,7 +110,7 @@
           ></el-table-column>
 
           <el-table-column label="Actions">
-            <div slot-scope="{ row, $index }">
+            <div slot-scope="{ row }">
               <el-tooltip
                 content="Saver Status Indicator"
                 style="margin-right:10px"
@@ -148,7 +168,7 @@ export default {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
     [Option.name]: Option,
-    [Select.name]: Select
+    [Select.name]: Select,
   },
   data() {
     return {
@@ -158,56 +178,50 @@ export default {
         name: "",
         dId: "",
         templateId: "",
-        templateName: ""
-      }
+        templateName: "",
+      },
     };
   },
   mounted() {
-    
     this.getTemplates();
   },
   methods: {
     updateSaverRuleStatus(rule) {
-      
       var ruleCopy = JSON.parse(JSON.stringify(rule));
 
       ruleCopy.status = !ruleCopy.status;
 
-      const toSend = { 
-        rule: ruleCopy 
+      const toSend = {
+        rule: ruleCopy,
       };
 
       const axiosHeaders = {
         headers: {
-          token: this.$store.state.auth.token
-        }
+          token: this.$store.state.auth.token,
+        },
       };
 
       this.$axios
         .put("/saver-rule", toSend, axiosHeaders)
-        .then(res => {
-
-
+        .then((res) => {
           if (res.data.status == "success") {
-
             this.$store.dispatch("getDevices");
 
             this.$notify({
               type: "success",
               icon: "tim-icons icon-check-2",
-              message: " Device Saver Status Updated"
+              message: " Device Saver Status Updated",
             });
-
           }
 
           return;
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
           this.$notify({
             type: "danger",
             icon: "tim-icons icon-alert-circle-exc",
-            message: " Error updating saver rule status"
+            message: " Error updating saver rule status",
           });
           return;
         });
@@ -216,21 +230,21 @@ export default {
     deleteDevice(device) {
       const axiosHeaders = {
         headers: {
-          token: this.$store.state.auth.accessToken
+          token: this.$store.state.auth.accessToken,
         },
         params: {
-          dId: device.dId
-        }
+          dId: device.dId,
+        },
       };
 
       this.$axios
         .delete("/device", axiosHeaders)
-        .then(res => {
+        .then((res) => {
           if (res.data.status == "success") {
             this.$notify({
               type: "success",
               icon: "tim-icons icon-check-2",
-              message: device.name + " deleted!"
+              message: device.name + " deleted!",
             });
           }
 
@@ -238,12 +252,12 @@ export default {
 
           return;
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
           this.$notify({
             type: "danger",
             icon: "tim-icons icon-alert-circle-exc",
-            message: " Error deleting " + device.name
+            message: " Error deleting " + device.name,
           });
           return;
         });
@@ -254,7 +268,7 @@ export default {
         this.$notify({
           type: "warning",
           icon: "tim-icons icon-alert-circle-exc",
-          message: " Device Name is Empty :("
+          message: " Device Name is Empty :(",
         });
         return;
       }
@@ -263,7 +277,7 @@ export default {
         this.$notify({
           type: "warning",
           icon: "tim-icons icon-alert-circle-exc",
-          message: " Device ID is Empty :("
+          message: " Device ID is Empty :(",
         });
         return;
       }
@@ -272,32 +286,30 @@ export default {
         this.$notify({
           type: "warning",
           icon: "tim-icons icon-alert-circle-exc",
-          message: " Tempalte must be selected"
+          message: " Tempalte must be selected",
         });
         return;
       }
 
       const axiosHeaders = {
         headers: {
-          token: this.$store.state.auth.token
-        }
+          token: this.$store.state.auth.token,
+        },
       };
 
       //ESCRIBIMOS EL NOMBRE Y EL ID DEL TEMPLATE SELECCIONADO EN EL OBJETO newDevice
-      this.newDevice.templateId = this.templates[
-        this.selectedIndexTemplate
-      ]._id;
-      this.newDevice.templateName = this.templates[
-        this.selectedIndexTemplate
-      ].name;
+      this.newDevice.templateId =
+        this.templates[this.selectedIndexTemplate]._id;
+      this.newDevice.templateName =
+        this.templates[this.selectedIndexTemplate].name;
 
       const toSend = {
-        newDevice: this.newDevice
+        newDevice: this.newDevice,
       };
 
       this.$axios
         .post("/device", toSend, axiosHeaders)
-        .then(res => {
+        .then((res) => {
           if (res.data.status == "success") {
             this.$store.dispatch("getDevices");
 
@@ -308,13 +320,13 @@ export default {
             this.$notify({
               type: "success",
               icon: "tim-icons icon-check-2",
-              message: "Success! Device was added"
+              message: "Success! Device was added",
             });
 
             return;
           }
         })
-        .catch(e => {
+        .catch((e) => {
           if (
             e.response.data.status == "error" &&
             e.response.data.error.errors.dId.kind == "unique"
@@ -323,7 +335,7 @@ export default {
               type: "warning",
               icon: "tim-icons icon-alert-circle-exc",
               message:
-                "The device is already registered in the system. Try another device"
+                "The device is already registered in the system. Try another device",
             });
             return;
           } else {
@@ -337,8 +349,8 @@ export default {
     async getTemplates() {
       const axiosHeaders = {
         headers: {
-          token: this.$store.state.auth.token
-        }
+          token: this.$store.state.auth.token,
+        },
       };
 
       try {
@@ -352,7 +364,7 @@ export default {
         this.$notify({
           type: "danger",
           icon: "tim-icons icon-alert-circle-exc",
-          message: "Error getting templates..."
+          message: "Error getting templates...",
         });
         console.log(error);
         return;
@@ -362,35 +374,34 @@ export default {
     deleteDevice(device) {
       const axiosHeader = {
         headers: {
-          token: this.$store.state.auth.token
+          token: this.$store.state.auth.token,
         },
         params: {
-          dId: device.dId
-        }
+          dId: device.dId,
+        },
       };
 
       this.$axios
         .delete("/device", axiosHeader)
-        .then(res => {
+        .then((res) => {
           if (res.data.status == "success") {
             this.$notify({
               type: "success",
               icon: "tim-icons icon-check-2",
-              message: device.name + " deleted!"
+              message: device.name + " deleted!",
             });
             this.$store.dispatch("getDevices");
           }
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
           this.$notify({
             type: "danger",
             icon: "tim-icons icon-alert-circle-exc",
-            message: " Error deleting " + device.name
+            message: " Error deleting " + device.name,
           });
         });
     },
-
-  }
+  },
 };
 </script>
