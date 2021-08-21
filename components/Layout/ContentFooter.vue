@@ -4,17 +4,17 @@
       <ul class="nav">
         <li class="nav-item">
           <a
-            href="https://ioticos.org"
+            href="https://danielcaldera.xyz"
             target="_blank"
             rel="noopener"
             class="nav-link"
           >
-            IoTicos.org
+            danielcaldera.xyz
           </a>
         </li>
         <li class="nav-item">
           <a
-            href="https://ioticos.org"
+            href="https://danielcaldera.xyz"
             target="_blank"
             rel="noopener"
             class="nav-link"
@@ -24,7 +24,7 @@
         </li>
         <li class="nav-item">
           <a
-            href="hhttps://ioticos.org"
+            href="https://danielcaldera.xyz"
             target="_blank"
             rel="noopener"
             class="nav-link"
@@ -35,14 +35,13 @@
       </ul>
       <div class="copyright">
         &copy; {{ year }}, made with <i class="tim-icons icon-heart-2"></i> by
-        
+
         <a
-          href="https://ioticos.org"
+          href="https://danielcaldera.xyz"
           target="_blank"
           rel="noopener"
-          >IoTicos</a
-        >
-        for a better web.
+        >Silver Cauldron Studios</a>
+        Always Improving.
       </div>
     </div>
   </footer>
@@ -51,9 +50,9 @@
 export default {
   data() {
     return {
-      year: new Date().getFullYear()
+      year: new Date().getFullYear(),
     };
-  }
+  },
 };
 </script>
 <style></style>

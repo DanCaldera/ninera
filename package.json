@@ -2,7 +2,7 @@
   "name": "ninera",
   "version": "1.0.0",
   "description": "IoT Solution for ESP32 CAM",
-  "author": "IoTicos.org",
+  "author": "Daniel Caldera",
   "scripts": {
     "dev": "nuxt",
     "devn": "nodemon api/index.js --exec babel-node",

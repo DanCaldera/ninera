@@ -1,47 +1,45 @@
 <template>
-  <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
+  <div
+    class="wrapper"
+    :class="{ 'nav-open': $sidebar.showSidebar }"
+  >
     <notifications></notifications>
 
     <side-bar
       :background-color="sidebarBackground"
       short-title="GL"
-      title="IoTicos GL"
+      title="Ninera IoT"
     >
-      <template slot-scope="props" slot="links">
-        <sidebar-item
-          :link="{
+      <template
+        slot-scope="props"
+        slot="links"
+      >
+        <sidebar-item :link="{
             name: 'Dashboard',
             icon: 'tim-icons icon-laptop',
             path: '/dashboard'
-          }"
-        >
+          }">
         </sidebar-item>
 
-        <sidebar-item
-          :link="{
+        <sidebar-item :link="{
             name: 'Devices',
             icon: 'tim-icons icon-light-3',
             path: '/devices'
-          }"
-        >
+          }">
         </sidebar-item>
 
-        <sidebar-item
-          :link="{
+        <sidebar-item :link="{
             name: 'Alarms',
             icon: 'tim-icons icon-bell-55',
             path: '/alarms'
-          }"
-        >
+          }">
         </sidebar-item>
 
-        <sidebar-item
-          :link="{
+        <sidebar-item :link="{
             name: 'Templates',
             icon: 'tim-icons icon-atom',
             path: '/templates'
-          }"
-        >
+          }">
         </sidebar-item>
       </template>
     </side-bar>
@@ -49,12 +47,21 @@
     <!--Share plugin (for demo purposes). You can remove it if don't plan on using it-->
     <sidebar-share :background-color.sync="sidebarBackground"> </sidebar-share>
 
-    <div class="main-panel" :data="sidebarBackground">
+    <div
+      class="main-panel"
+      :data="sidebarBackground"
+    >
       <dashboard-navbar></dashboard-navbar>
       <router-view name="header"></router-view>
 
-      <div :class="{ content: !isFullScreenRoute }" @click="toggleSidebar">
-        <zoom-center-transition :duration="1000" mode="out-in">
+      <div
+        :class="{ content: !isFullScreenRoute }"
+        @click="toggleSidebar"
+      >
+        <zoom-center-transition
+          :duration="1000"
+          mode="out-in"
+        >
           <!-- your content here -->
           <nuxt></nuxt>
         </zoom-center-transition>
@@ -97,7 +104,7 @@ export default {
     DashboardContent,
     SlideYDownTransition,
     ZoomCenterTransition,
-    SidebarShare
+    SidebarShare,
   },
   data() {
     return {
@@ -118,14 +125,14 @@ export default {
           "_" +
           Math.floor(Math.random() * 1000000 + 1),
         username: "",
-        password: ""
-      }
+        password: "",
+      },
     };
   },
   computed: {
     isFullScreenRoute() {
       return this.$route.path === "/maps/full-screen";
-    }
+    },
   },
   mounted() {
     this.$store.dispatch("getNotifications");
@@ -143,8 +150,8 @@ export default {
       try {
         const axiosHeaders = {
           headers: {
-            token: this.$store.state.auth.token
-          }
+            token: this.$store.state.auth.token,
+          },
         };
 
         const credentials = await this.$axios.post(
@@ -177,8 +184,8 @@ export default {
       try {
         const axiosHeaders = {
           headers: {
-            token: this.$store.state.auth.token
-          }
+            token: this.$store.state.auth.token,
+          },
         };
 
         const credentials = await this.$axios.post(
@@ -193,9 +200,7 @@ export default {
           this.client.options.password = credentials.data.password;
         }
       } catch (error) {
-
         console.log(error);
-
 
         if (error.response.status == 401) {
           console.log("NO VALID TOKEN");
@@ -206,7 +211,6 @@ export default {
 
           window.location.href = "/login";
         }
-        
       }
     },
 
@@ -220,13 +224,11 @@ export default {
         this.$store.state.auth.userData._id + "/+/+/notif";
 
       const connectUrl =
-        process.env.mqtt_prefix + 
+        process.env.mqtt_prefix +
         this.options.host +
         ":" +
         this.options.port +
         this.options.endpoint;
-
-        
 
       try {
         this.client = mqtt.connect(connectUrl, this.options);
@@ -241,7 +243,7 @@ export default {
         console.log("Connection succeeded!");
 
         //SDATA SUBSCRIBE
-        this.client.subscribe(deviceSubscribeTopic, { qos: 0 }, err => {
+        this.client.subscribe(deviceSubscribeTopic, { qos: 0 }, (err) => {
           if (err) {
             console.log("Error in DeviceSubscription");
             return;
@@ -251,7 +253,7 @@ export default {
         });
 
         //NOTIF SUBSCRIBE
-        this.client.subscribe(notifSubscribeTopic, { qos: 0 }, err => {
+        this.client.subscribe(notifSubscribeTopic, { qos: 0 }, (err) => {
           if (err) {
             console.log("Error in NotifSubscription");
             return;
@@ -261,16 +263,16 @@ export default {
         });
       });
 
-      this.client.on("error", error => {
+      this.client.on("error", (error) => {
         console.log("Connection failed", error);
       });
 
-      this.client.on("reconnect", error => {
+      this.client.on("reconnect", (error) => {
         console.log("reconnecting:", error);
         this.getMqttCredentialsForReconnection();
       });
 
-      this.client.on("disconnect", error => {
+      this.client.on("disconnect", (error) => {
         console.log("MQTT disconnect EVENT FIRED:", error);
       });
 
@@ -286,7 +288,7 @@ export default {
             this.$notify({
               type: "danger",
               icon: "tim-icons icon-alert-circle-exc",
-              message: message.toString()
+              message: message.toString(),
             });
             this.$store.dispatch("getNotifications");
             return;
@@ -299,7 +301,7 @@ export default {
         }
       });
 
-      $nuxt.$on("mqtt-sender", toSend => {
+      $nuxt.$on("mqtt-sender", (toSend) => {
         this.client.publish(toSend.topic, JSON.stringify(toSend.msg));
       });
     },
@@ -322,8 +324,8 @@ export default {
       } else {
         docClasses.add("perfect-scrollbar-off");
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">
