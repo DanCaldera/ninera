@@ -1,3 +1,11 @@
+/**----------------------------------------------
+ * ?                    ABOUT
+ * @author      : Daniel Caldera
+ * @email       : danxcaldera@gmail.com
+ * @createdOn   : 21/08/21
+ * @path        : pages/templates.vue
+ *---------------------------------------------**/
+
 <template>
   <div>
     <!-- WIDGET CONFIGURATOR -->
@@ -58,7 +66,11 @@
               >
               </base-input>
 
-              <base-input v-model="ncConfig.unit" label="Unit" type="text">
+              <base-input
+                v-model="ncConfig.unit"
+                label="Unit"
+                type="text"
+              >
               </base-input>
 
               <base-input
@@ -567,7 +579,7 @@
           </div>
         </div>
       </card>
-    </div> 
+    </div>
 
     <!-- DASHBOARD PREVIEW -->
     <div class="row">
@@ -606,7 +618,7 @@
     </div>
 
     <!-- SAVE TEMPLATE FORM-->
-    <div class="row" >
+    <div class="row">
       <card>
         <div slot="header">
           <h4 class="card-title">Save Template</h4>
@@ -658,13 +670,23 @@
 
         <div class="row">
           <el-table :data="templates">
-            <el-table-column min-width="50" label="#" align="center">
-              <div class="photo" slot-scope="{ row, $index }">
+            <el-table-column
+              min-width="50"
+              label="#"
+              align="center"
+            >
+              <div
+                class="photo"
+                slot-scope="{  $index }"
+              >
                 {{ $index + 1 }}
               </div>
             </el-table-column>
 
-            <el-table-column prop="name" label="Name"></el-table-column>
+            <el-table-column
+              prop="name"
+              label="Name"
+            ></el-table-column>
 
             <el-table-column
               prop="description"
@@ -676,9 +698,13 @@
               label="Widgets"
             ></el-table-column>
 
-            <el-table-column header-align="right" align="right" label="Actions">
+            <el-table-column
+              header-align="right"
+              align="right"
+              label="Actions"
+            >
               <div
-                slot-scope="{ row, $index }"
+                slot-scope="{ row }"
                 class="text-right table-actions"
               >
                 <el-tooltip
@@ -704,7 +730,6 @@
       </card>
     </div>
 
-
   </div>
 </template>
 
@@ -718,7 +743,7 @@ export default {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
     [Option.name]: Option,
-    [Select.name]: Select
+    [Select.name]: Select,
   },
   data() {
     return {
@@ -728,12 +753,11 @@ export default {
       templateName: "",
       templateDescription: "",
 
-
       ncConfig: {
         userId: "sampleuserid",
         selectedDevice: {
           name: "Home",
-          dId: "8888"
+          dId: "8888",
         },
         variableFullName: "temperature",
         variable: "varname",
@@ -746,14 +770,14 @@ export default {
         widget: "numberchart",
         icon: "fa-sun",
         chartTimeAgo: 60,
-        demo: true
+        demo: true,
       },
 
       iotSwitchConfig: {
         userId: "userid",
         selectedDevice: {
           name: "Home",
-          dId: "8888"
+          dId: "8888",
         },
         variableFullName: "Luz",
         variable: "varname",
@@ -761,15 +785,14 @@ export default {
         class: "danger",
         widget: "switch",
         icon: "fa-bath",
-        column: "col-6"
+        column: "col-6",
       },
-
 
       iotIndicatorConfig: {
         userId: "userid",
         selectedDevice: {
           name: "Home",
-          dId: "8888"
+          dId: "8888",
         },
         variableFullName: "temperature",
         variable: "varname",
@@ -778,7 +801,7 @@ export default {
         class: "success",
         widget: "indicator",
         icon: "fa-bath",
-        column: "col-6"
+        column: "col-6",
       },
 
       configButton: {
@@ -788,7 +811,7 @@ export default {
           dId: "8888",
           templateName: "Power Sensor",
           templateId: "984237562348756ldksjfh",
-          saverRule: false
+          saverRule: false,
         },
         variableFullName: "Pump",
         variable: "var1",
@@ -797,10 +820,8 @@ export default {
         column: "col-4",
         widget: "button",
         class: "danger",
-        message: "{'fanstatus': 'stop'}"
+        message: "{'fanstatus': 'stop'}",
       },
-
-
     };
   },
 
@@ -813,8 +834,8 @@ export default {
     async getTemplates() {
       const axiosHeaders = {
         headers: {
-          token: this.$store.state.auth.token
-        }
+          token: this.$store.state.auth.token,
+        },
       };
 
       try {
@@ -828,7 +849,7 @@ export default {
         this.$notify({
           type: "danger",
           icon: "tim-icons icon-alert-circle-exc",
-          message: "Error getting templates..."
+          message: "Error getting templates...",
         });
         console.log(error);
         return;
@@ -839,8 +860,8 @@ export default {
     async saveTemplate() {
       const axiosHeaders = {
         headers: {
-          token: this.$store.state.auth.token
-        }
+          token: this.$store.state.auth.token,
+        },
       };
 
       console.log(axiosHeaders);
@@ -849,8 +870,8 @@ export default {
         template: {
           name: this.templateName,
           description: this.templateDescription,
-          widgets: this.widgets
-        }
+          widgets: this.widgets,
+        },
       };
 
       try {
@@ -860,7 +881,7 @@ export default {
           this.$notify({
             type: "success",
             icon: "tim-icons icon-alert-circle-exc",
-            message: "Template created!"
+            message: "Template created!",
           });
           this.getTemplates();
 
@@ -870,7 +891,7 @@ export default {
         this.$notify({
           type: "danger",
           icon: "tim-icons icon-alert-circle-exc",
-          message: "Error creating template..."
+          message: "Error creating template...",
         });
         console.log(error);
         return;
@@ -879,33 +900,31 @@ export default {
 
     //Delete Template
     async deleteTemplate(template) {
-
-      
       const axiosHeaders = {
         headers: {
-          token: this.$store.state.auth.token
+          token: this.$store.state.auth.token,
         },
-        params:{
-          templateId:template._id
-        }
+        params: {
+          templateId: template._id,
+        },
       };
 
       console.log(axiosHeaders);
 
       try {
-
         const res = await this.$axios.delete("/template", axiosHeaders);
 
-        console.log(res.data)
+        console.log(res.data);
 
         if (res.data.status == "fail" && res.data.error == "template in use") {
-
           this.$notify({
             type: "danger",
             icon: "tim-icons icon-alert-circle-exc",
-            message: template.name + " is in use. First remove the devices linked to the template!"
+            message:
+              template.name +
+              " is in use. First remove the devices linked to the template!",
           });
-          
+
           return;
         }
 
@@ -913,16 +932,16 @@ export default {
           this.$notify({
             type: "success",
             icon: "tim-icons icon-check-2",
-            message: template.name + " was deleted!"
+            message: template.name + " was deleted!",
           });
-          
+
           this.getTemplates();
         }
       } catch (error) {
         this.$notify({
           type: "danger",
           icon: "tim-icons icon-alert-circle-exc",
-          message: "Error getting templates..."
+          message: "Error getting templates...",
         });
         console.log(error);
         return;
@@ -950,7 +969,6 @@ export default {
         this.iotIndicatorConfig.variable = this.makeid(10);
         this.widgets.push(JSON.parse(JSON.stringify(this.iotIndicatorConfig)));
       }
-
     },
 
     //Delete Widget
@@ -969,7 +987,7 @@ export default {
         );
       }
       return result;
-    }
-  }
+    },
+  },
 };
 </script>
